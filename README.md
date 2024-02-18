@@ -1,3 +1,8 @@
+```shell
+patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./wasmtime
+cargo rustc --features "todo log atomic-dbg-logger" -- -Zlinker-features=-lld -Clink-arg=-Wl,-e,_dlstart -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic && LD_LIBRARY_PATH="libs:$(rustc --print target-libdir --target x86_64-unknown-linux-musl)" ./wasmtime-v40.0.2-x86_64-musl/wasmtime run --allow-precompiled hello.cwasm
+```
+
 <div align="center">
   <h1>Eyra</h1>
 

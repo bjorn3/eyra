@@ -12,6 +12,9 @@ edition = "2021"
 exclude = ["/.github", "ci"]
 keywords = ["linux"]
 
+[lib]
+crate-type = ["lib", "dylib"]
+
 [dependencies]
 c-gull = { version = "0.22.1", default-features = false, features = ["eyra"] }
 
@@ -116,3 +119,6 @@ panic-handler-trap = ["c-gull/panic-handler-trap"]
 # Alternatively, you can define the global allocator manually; see the
 # example-crates/custom-allocator example.
 global-allocator = ["c-gull/global-allocator"]
+
+[patch.crates-io]
+c-gull = { path = "./c-ward/c-gull" }
