@@ -12,6 +12,9 @@ edition = "2021"
 exclude = ["/.github", "ci"]
 keywords = ["linux"]
 
+[lib]
+crate-type = ["lib", "dylib"]
+
 [dependencies]
 c-gull = { version = "0.17.0", default-features = false, features = ["eyra"] }
 
@@ -84,3 +87,7 @@ deprecated-and-unimplemented = ["c-gull/deprecated-and-unimplemented"]
 # makes it into the Rust compiler.
 [profile.dev.package.unwinding]
 debug = false
+
+[patch.crates-io]
+origin = { path = "./origin" }
+c-gull = { path = "./c-ward/c-gull" }

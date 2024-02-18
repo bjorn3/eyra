@@ -1,3 +1,9 @@
+```shell
+echo 'fn main() { println!("Hello dylinked Eyra!"); }' | rustc - -Clto=fat -Copt-level=3 -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g
+cargo rustc --features todo -- -Clink-arg=-Wl,-e,_start -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic
+target/debug/libeyra.so ./hello
+```
+
 <div align="center">
   <h1>Eyra</h1>
 
