@@ -1,5 +1,7 @@
 ```shell
-echo 'fn main() { std::thread::spawn(|| { println!("Hello dylinked Eyra!"); panic!(); }).join().unwrap(); panic!(); }' | rustc - -Clto=fat -Copt-level=3 -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g -Cprefer-dynamic -Zdylib-lto
+echo 'use std::cell::Cell; thread_local! { static FOO: Cell<u8> = Cell::new(1); } fn main() { FOO.set(2); println!("{}", FOO.get()); std::thread::spawn(|| { println!("Hello dylinked Eyra!"); }).join().unwrap(); std::collections::hash_map::RandomState::new(); }' | rustc - -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g -Cprefer-dynamic
+# Crashes in `std::thread::set_current` without -Cprefer-dynamic
+# Crashes when accessing any TLS variable from libstd.so in a new thread with -Cprefer-dynamic
 patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./hello
 touch src/lib.rs && cargo rustc --features "todo log atomic-dbg-logger" -- -Clink-arg=-Wl,-e,_start -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic
 LD_LIBRARY_PATH=$(rustc --print target-libdir --target x86_64-unknown-linux-musl) ./hello
