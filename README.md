@@ -1,7 +1,8 @@
 ```shell
-echo 'fn main() { println!("Hello dylinked Eyra!"); }' | rustc - -Clto=fat -Copt-level=3 -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g
-cargo rustc --features todo -- -Clink-arg=-Wl,-e,_start -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic
-target/debug/libeyra.so ./hello
+echo 'fn main() { std::thread::spawn(|| { println!("Hello dylinked Eyra!"); panic!(); }).join().unwrap(); panic!(); }' | rustc - -Clto=fat -Copt-level=3 -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g -Cprefer-dynamic -Zdylib-lto
+patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./hello
+touch src/lib.rs && cargo rustc --features "todo log atomic-dbg-logger" -- -Clink-arg=-Wl,-e,_start -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic
+LD_LIBRARY_PATH=$(rustc --print target-libdir --target x86_64-unknown-linux-musl) ./hello
 ```
 
 <div align="center">
