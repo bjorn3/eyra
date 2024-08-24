@@ -1,10 +1,9 @@
 ```shell
-echo 'use std::cell::Cell; thread_local! { static FOO: Cell<u8> = Cell::new(1); } fn main() { FOO.set(2); println!("{}", FOO.get()); std::thread::spawn(|| { println!("Hello dylinked Eyra!"); }).join().unwrap(); std::collections::hash_map::RandomState::new(); }' | rustc - -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g -Cprefer-dynamic
-# Crashes in `std::thread::set_current` without -Cprefer-dynamic
+echo 'use std::cell::Cell; thread_local! { static FOO: Cell<u8> = Cell::new(1); } fn main() { println!("{}", FOO.get()); FOO.set(2); println!("{}", FOO.get()); std::thread::spawn(|| { println!("Hello dylinked Eyra!"); }).join().unwrap(); std::collections::hash_map::RandomState::new(); }' | rustc - -o hello --target x86_64-unknown-linux-musl -Ctarget-feature=-crt-static -g -Cprefer-dynamic
 # Crashes when accessing any TLS variable from libstd.so in a new thread with -Cprefer-dynamic
-patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./hello
+patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./hello; patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./wasmtime
 touch src/lib.rs && cargo rustc --features "todo log atomic-dbg-logger" -- -Clink-arg=-Wl,-e,_start -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic
-LD_LIBRARY_PATH=$(rustc --print target-libdir --target x86_64-unknown-linux-musl) ./hello
+LD_LIBRARY_PATH=$(rustc --print target-libdir --target x86_64-unknown-linux-musl) ./hello || true; RUST_LIB_BACKTRACE=0 ./wasmtime -Cparallel-compilation=no -Sthreads=yes -Spreview2=no --dir=. ~/Projects/browser_wasi_shim/examples/wasm-rustc/bin/bingrep.wasm ./hello
 ```
 
 <div align="center">
