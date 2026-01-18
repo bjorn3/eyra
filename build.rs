@@ -36,7 +36,6 @@ fn main() {
         "src/math/__fpclassifyl.lo",
         "src/math/__signbitl.lo",
         "src/misc/getauxval.lo",
-        "src/misc/syscall.lo",
         "src/mman/posix_madvise.lo",
         "src/multibyte/btowc.lo",
         "src/multibyte/wctob.lo",
