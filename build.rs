@@ -59,7 +59,6 @@ fn main() {
         "src/signal/sigismember.lo",
         "src/signal/signal.lo",
         "src/signal/sigprocmask.lo",
-        "src/signal/sigrtmax.lo",
         "src/signal/sigsuspend.lo",
         "src/signal/sigtimedwait.lo",
         "src/signal/sigwait.lo",
