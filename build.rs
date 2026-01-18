@@ -61,7 +61,6 @@ fn main() {
         "src/stdio/ofl.lo",
         "src/string/bcmp.lo",
         "src/string/memcmp.lo",
-        "src/string/strchrnul.lo",
         "src/string/strlen.lo",
         "src/string/x86_64/memcpy.lo",
         "src/string/x86_64/memmove.lo",
@@ -109,7 +108,6 @@ fn main() {
         "src/thread/x86_64/__unmapself.lo",
         "src/thread/x86_64/clone.lo",
         "src/thread/x86_64/syscall_cp.lo",
-        "src/time/clock_gettime.lo",
         "src/unistd/_exit.lo",
     ] {
         println!("cargo:rebuild-if-changed=musl/obj/{file}");
