@@ -1,6 +1,8 @@
 ```shell
 patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ./wasmtime
-cargo rustc --features "todo log atomic-dbg-logger extra-syscalls" -- -Zlinker-features=-lld -Clink-arg=-Wl,-e,_dlstart -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic && LD_LIBRARY_PATH="libs:$(rustc --print target-libdir --target x86_64-unknown-linux-musl)" ./wasmtime-v40.0.2-x86_64-musl/wasmtime run --allow-precompiled hello.cwasm
+patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ~/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/rustc
+patchelf --set-interpreter $(pwd)/target/debug/libeyra.so ~/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/cargo
+cargo rustc --features "todo log atomic-dbg-logger extra-syscalls" -- -Zlinker-features=-lld -Clink-arg=-Wl,-e,_dlstart -Clinker=./linker.sh -Clink-arg=-Wl,-Bsymbolic && LD_LIBRARY_PATH="libs:$(rustc --print target-libdir --target x86_64-unknown-linux-musl)" ./hello && LD_LIBRARY_PATH="libs:$(rustc --print target-libdir --target x86_64-unknown-linux-musl)" ./wasmtime-v40.0.2-x86_64-musl/wasmtime run --allow-precompiled hello.cwasm && echo "fn main() { println!(\"Hello from Rust\"); }" | LD_LIBRARY_PATH="libs:$(rustc --print target-libdir --target x86_64-unknown-linux-musl)" ~/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/rustc - -Ctarget-feature=-crt-static --target x86_64-unknown-linux-musl && LD_LIBRARY_PATH="libs:$(rustc --print target-libdir --target x86_64-unknown-linux-musl)" target/debug/libeyra.so ./rust_out && rm -r target/x86_64-unknown-linux-musl && LD_LIBRARY_PATH=$(pwd)/libs RUSTC_BOOTSTRAP=1 RUST_LIB_BACKTRACE=0 RUSTC=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/rustc ~/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/cargo build --target x86_64-unknown-linux-musl
 ```
 
 <div align="center">
