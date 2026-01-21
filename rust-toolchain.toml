@@ -1,4 +1,4 @@
 [toolchain]
-channel = "nightly-2025-04-28"
+channel = "nightly-2025-12-07"
 components = ["rustc", "cargo", "rust-std", "rust-src", "rustfmt"]
 targets = ["x86_64-unknown-linux-musl"]
